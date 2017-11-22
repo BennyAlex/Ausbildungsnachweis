@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ausbildungsnachweis</title>
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #FAFAFA;
+        }
+
+        html {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-size: 16px;
+            font-family: Verdana, Geneva, sans-serif;
+        }
+
+        *, *:before, *:after {
+            -webkit-box-sizing: inherit;
+            -moz-box-sizing: inherit;
+            box-sizing: inherit;
+            font-size: inherit;
+        }
+
+        #browserIsEvil, #loading {
+            text-align: center;
+            width: 100%;
+            margin-top: 60px;
+            font-size: 24px;
+        }
+
+        #loading {
+            color: blue;
+        }
+
+        #browserIsEvil {
+            color: red;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        .invisible {
+            display: none;
+        }
+
+        #navbar {
+            top: 0;
+            left: 0;
+            position: fixed;
+            width: 100%;
+            height: 125px;
+            z-index: 99;
+            -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, .2), 0 2px 2px rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .12);
+            -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, .2), 0 2px 2px rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .12);
+            box-shadow: 0 1px 5px rgba(0, 0, 0, .2), 0 2px 2px rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .12);
+        }
+
+        #header {
+            width: 100%;
+            height: 75px;
+            line-height: 75px;
+            background: #3b76e2;
+        }
+
+        #actions {
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            background: #2054c5;
+            text-align: center;
+        }
+
+        #actions button {
+            margin: 0 7px
+        }
+
+        #logo {
+            font-size: 31px;
+            color: white;
+            letter-spacing: 2px;
+            padding-left: 26px;
+        }
+
+        #header div {
+            float: right;
+            padding-right: 26px;
+            font-size: 19px;
+        }
+
+        input {
+            text-decoration: none;
+            border: none;
+            border-bottom: 1px solid black;
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+
+        #name input {
+            width: 260px;
+        }
+
+        #department input {
+            width: 135px;
+        }
+
+        #number input, #year input {
+            width: 30px;
+        }
+
+        #date input {
+            width: 83px;
+        }
+
+        button {
+            background: white;
+            color: black;
+            border: 2px solid black;
+            padding: 7px 14px;
+            transition: all 0.6s;
+        }
+
+        button.round {
+            border-radius: 45px;
+            -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, .2), 0 2px 2px rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .12);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .2), 0 3px 3px rgba(0, 0, 0, .14), 0 4px 2px -2px rgba(0, 0, 0, .12);
+        }
+
+        button:hover {
+            background: #f0f0f0;
+            cursor: pointer;
+        }
+
+        div.input li:not(:last-child) {
+            padding-bottom: 12px;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: baseline;
+            align-content: space-between;
+        }
+
+        .row div {
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
+        .content, .card, .title, .content-no-padding, table, tr {
+            width: 100%;
+        }
+
+        .card {
+            height: auto;
+            -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, .2), 0 2px 2px rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .12);
+            box-shadow: 0 1px 5px rgba(0, 0, 0, .2), 0 2px 2px rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .12);
+            position: relative;
+            border-radius: 2px;
+        }
+
+        .card > :first-child {
+            border-top-left-radius: inherit;
+            border-top-right-radius: inherit;
+        }
+
+        .card > :last-child {
+            border-bottom-left-radius: inherit;
+            border-bottom-right-radius: inherit;
+        }
+
+        .card .title {
+            padding: 15px;
+            padding-left: 17px;
+            background: #d9d9d9;
+            font-weight: bold;
+        }
+
+        .card .content {
+            padding: 13px 17px 17px;
+        }
+
+        .content .input {
+            min-height: 16px;
+            max-height: 310px;
+            overflow: hidden;
+            line-height: 1.3em;
+        }
+
+        .headline {
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        #signature {
+            background: white;
+            position: absolute;
+            width: inherit;
+            z-index: 5;
+            bottom: 16mm;
+        }
+
+        table {
+            border-spacing: 9px;
+            table-layout: fixed;
+        }
+
+        tr {
+            text-align: center;
+            height: 46px;
+            vertical-align: middle;
+        }
+
+        td {
+            vertical-align: middle;
+        }
+
+        td.border-left {
+            border-left: 2px solid #d7d7d7;
+        }
+
+        td.border-right {
+            border-right: 2px solid #d7d7d7;
+        }
+
+        .line {
+            width: auto;
+            margin: 0 9px;
+            height: 2px;
+            background: #d7d7d7;
+        }
+
+        .page {
+            width: 210mm;
+            height: 297mm;
+            padding: 15mm;
+            margin: 10mm auto;
+            border: 2px #919191 solid;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .subpage {
+            position: relative;
+            height: 267mm;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        @media print {
+            .print-hide {
+                display: none !important;
+            }
+
+            html, body {
+                width: 210mm;
+                height: 297mm;
+            }
+
+            .page {
+                margin: 0;
+                border: initial;
+                border-radius: initial;
+                width: initial;
+                min-height: initial;
+                box-shadow: initial;
+                background: initial;
+                page-break-after: always;
+            }
+
+            .card, .title, .content, .content-no-padding, .line, .input {
+                -webkit-print-color-adjust: exact !important;
+                -moz-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .content, .card, .input {
+                -webkit-box-shadow: none !important;
+                box-shadow: none !important;
+            }
+
+            .card {
+                border: 1px solid #414141 !important;
+            }
+
+            .title {
+                background: #e0e0e0 !important;
+            }
+
+            tr, td, .border-right, .border-left {
+                border-color: #d6d6d6 !important;
+            }
+
+            .line {
+                background: #d6d6d6 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="loading" class="visible">
+    Seite wird geladen, bitte warten
+</div>
+<div id="browserIsEvil" class="invisible">
+    Dieser Browser wird nicht unterstützt!<br>
+    Bitte <b>Google Chrome</b> benutzen
+</div>
+<div id="site-content" class="invisible">
+    <div id="navbar" class="print-hide">
+        <div id="header">
+            <span id="logo">Ausbildungsnachweis</span>
+            <div>
+                <button class="round" onclick="print()">Drucken / Herunterladen</button>
+            </div>
+        </div>
+        <div id="actions">
+            <button onclick="document.execCommand('bold')">Fett (Strg + B)</button>
+            <button onclick="document.execCommand('insertOrderedList')">Geordnete Liste (Strg + G)</button>
+            <button onclick="document.execCommand('insertUnorderedList')">Ungeordnete Liste (Strg + L)</button>
+            <!--<button style="margin-left: 24px" onclick="addField();">Textfeld hinzufügen</button>-->
+        </div>
+    </div>
+    <div style="margin-top: 162px" class="print-hide"></div>
+
+    <div class="page">
+        <div class="subpage">
+            <div class="row">
+                <div style="margin-bottom: 32px; margin-top: 3mm">
+                    <span class="headline">Ausbildungsnachweis</span>
+                    <span id="number" style="padding-left: 65px">Nr: <input title="Nummer"></span>
+                    <span id="year" style="padding-left: 25px">Lehrjahr: <input title="Ausbildungsjahr"></span>
+                </div>
+                <div id="name">Name: <input title="Name"></div>
+                <div id="department">Ausbildungsabteilung: <input title="Ausbildungsabteilung"></div>
+                <div id="date" style="margin-bottom: 0">Ausbildungswoche vom <input title="vom"> bis <input title="bis">
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 36px">
+                <div class="title" contenteditable="true">Betriebliche Tätigkeiten</div>
+                <div class="content">
+                    <div class="input" contenteditable="true">
+                        <div><br></div>
+                        <div><br></div>
+                        <div><br></div>
+                        <div><br></div>
+                        <div><br></div>
+                        <div><br></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 36px">
+                <div class="title" contenteditable="true">Berufsschule und Unterrichtsthemen</div>
+                <div class="content">
+                    <div class="input" contenteditable="true">
+                        <div><br></div>
+                        <div><br></div>
+                        <div><br></div>
+                        <div><br></div>
+                        <div><br></div>
+                        <div><br></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="signature">
+                <div class="card">
+                    <div class="title">Unterschriften</div>
+                    <div class="content-no-padding">
+                        <table>
+                            <tr>
+                                <td class="border-right"></td>
+                                <td></td>
+                                <td class="border-left"></td>
+                            </tr>
+                        </table>
+                        <div class="line"></div>
+                        <table>
+                            <tr style="font-size: 15px">
+                                <td class="border-right">Ausbilder & Datum</td>
+                                <td>Auszubildender & Datum</td>
+                                <td class="border-left">Ges. Vertreter & Datum</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div class="page">
+    <div class="subpage">Page 2/2</div>
+</div>-->
+<script>
+    /*function createField () {
+        var card = document.createElement('div')
+        card.className = 'card'
+
+        var title = document.createElement('div')
+        title.className = 'title input'
+        title.setAttribute('contenteditable', true)
+        title.innerHTML = 'Betriebliche Tätigkeiten'
+
+        var content = document.createElement('div')
+        content.className = 'content'
+
+        var input = document.createElement('div')
+        input.setAttribute('contenteditable', true)
+        input.className = 'input'
+
+        content.appendChild(input)
+
+        card.appendChild(title)
+        card.appendChild(content)
+        document.getElementById('page').appendChild(card)
+    }*/
+
+    function addEventListeners () {
+        var inputs = document.getElementsByClassName('input')
+
+        var overwriteTabKey = function (e) {
+            if (e.keyCode === 9) {
+                e.preventDefault()
+                document.execCommand('insertHTML', false, '&emsp;')
+            }
+        }
+
+        var boldShortcut = function (e) {
+            if (e.ctrlKey && e.keyCode === 66) {
+                e.preventDefault()
+                document.execCommand('bold')
+            }
+        }
+
+        var ul = function (e) {
+            if (e.ctrlKey && e.keyCode === 76) {
+                e.preventDefault()
+                document.execCommand('insertUnorderedList')
+            }
+        }
+
+        var ol = function (e) {
+            if (e.ctrlKey && e.keyCode === 71) {
+                e.preventDefault()
+                document.execCommand('insertOrderedList')
+            }
+        }
+
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].addEventListener('keydown', function (event) {
+                overwriteTabKey(event)
+            })
+
+            inputs[i].addEventListener('keydown', function (event) {
+                boldShortcut(event)
+            })
+
+            inputs[i].addEventListener('keydown', function (event) {
+                ol(event)
+            })
+
+            inputs[i].addEventListener('keydown', function (event) {
+                ul(event)
+            })
+        }
+    }
+
+    function isChrome () {
+        var isChromium = window.chrome
+        var winNav = window.navigator
+        var vendorName = winNav.vendor
+        var isOpera = winNav.userAgent.indexOf('OPR') > -1
+        var isIEedge = winNav.userAgent.indexOf('Edge') > -1
+        var isIOSChrome = winNav.userAgent.match('CriOS')
+
+        if (isIOSChrome) {
+            return true
+        } else {
+            return (
+                isChromium !== null &&
+                typeof isChromium !== 'undefined' &&
+                vendorName === 'Google Inc.' &&
+                isOpera === false &&
+                isIEedge === false
+            )
+        }
+    }
+
+    /*function addField () {
+        createField()
+        addEventListeners()
+    }*/
+
+    window.onload = function () {
+        // addField()
+        document.getElementById('loading').className = 'invisible'
+        if (isChrome()) {
+            addEventListeners()
+            document.getElementById('site-content').className = ''
+        }
+        else {
+            document.getElementById('browserIsEvil').className = ''
+        }
+    }
+</script>
+</body>
+</html>
